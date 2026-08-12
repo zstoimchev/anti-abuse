@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/zstoimchev/anti-abuse/api/internal/account"
+	"github.com/zstoimchev/anti-abuse/api/internal/device"
 )
 
 func main() {
@@ -12,8 +13,11 @@ func main() {
 
 	accountStore := account.NewStore()
 	accountHandler := account.NewHandler(accountStore)
-
 	accountHandler.RegisterRoutes(mux)
+
+	deviceStore := device.NewStore()
+	deviceHandler := device.NewHandler(deviceStore)
+	deviceHandler.RegisterRoutes(mux)
 
 	mux.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
